@@ -124,7 +124,19 @@ const readImage = (filename: string): Image => {
 
 // Writes an Image object to a PPM P3 file
 const writeImage = (image: Image, filename: string): void => {
-
+  let content = "P3\n";
+  content += `${image.width} ${image.height}\n`;
+  content += `255\n`;
+  
+  for (let row = 0; row < image.height; row++) {
+    for (let col = 0; col < image.width; col++) {
+      const pixel: Color = image.pixels[row]![col]!;
+      content += `${pixel.red} ${pixel.green} ${pixel.blue} `;
+    }
+    content += `\n`;
+  }
+  
+  writeFileSync(filename, content, "utf-8");
 };
 
 const usage = (): void => {
@@ -135,7 +147,7 @@ const usage = (): void => {
 
 const grayscale = (image: Image, outFile: string): void => {
   // TODO Manually process pixel data for grayscale conversion
-  console.log(image);
+  writeImage(image, outFile);
   console.log(`Grayscale image saved to ${outFile}`);
 };
 
