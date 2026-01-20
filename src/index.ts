@@ -1,5 +1,3 @@
-import sharp from "sharp";
-
 const args = process.argv.slice(2);
 
 const main = (): void => {
@@ -12,7 +10,7 @@ const main = (): void => {
 
   const inFile = args[0];
   const outFile = args[1];
-  const image = sharp(args[2]);
+//   const image = readFile(inFile);
 
   switch (args[2]) {
     case "grayscale":
