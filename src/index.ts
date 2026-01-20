@@ -82,7 +82,7 @@ const readImage = (filename: string): Image => {
   // Skip the P3 header
   index++;
 
-  // Safety check 
+  // Safety check
   if (tokens.length < 4) {
     throw new Error("Invalid PPM file");
   }
@@ -94,7 +94,7 @@ const readImage = (filename: string): Image => {
   // Skip max color value (assumed to be 255)
   index++;
 
-  // Safety check: validate number of tokens 
+  // Safety check: validate number of tokens
   const expectedTokens = 4 + width * height * 3; // 4 header + RGB values
   if (tokens.length < expectedTokens) {
     throw new Error(
@@ -127,7 +127,7 @@ const writeImage = (image: Image, filename: string): void => {
   let content = "P3\n";
   content += `${image.width} ${image.height}\n`;
   content += `255\n`;
-  
+
   for (let row = 0; row < image.height; row++) {
     for (let col = 0; col < image.width; col++) {
       const pixel: Color = image.pixels[row]![col]!;
@@ -135,7 +135,7 @@ const writeImage = (image: Image, filename: string): void => {
     }
     content += `\n`;
   }
-  
+
   writeFileSync(filename, content, "utf-8");
 };
 
@@ -146,7 +146,24 @@ const usage = (): void => {
 };
 
 const grayscale = (image: Image, outFile: string): void => {
-  // TODO Manually process pixel data for grayscale conversion
+  for (let row = 0; row < image.height; row++) {
+    for (let col = 0; col < image.width; col++) {
+      const curColor = image.pixels[row]![col]!;
+
+      const grayLevel = Math.max(
+        0,
+        Math.min(
+          Math.floor((curColor.red + curColor.green + curColor.blue) / 3),
+          255,
+        ),
+      );
+
+      curColor.red = grayLevel;
+      curColor.green = grayLevel;
+      curColor.blue = grayLevel;
+    }
+  }
+
   writeImage(image, outFile);
   console.log(`Grayscale image saved to ${outFile}`);
 };
