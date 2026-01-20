@@ -27,7 +27,7 @@ const main = async (): Promise<void> => {
   try {
     image = readImage(inFile);
     console.log(`Image loaded successfully: ${image.width}x${image.height}`);
-    console.log(`Image pixels:`, image.pixels);
+    // console.log(`Image pixels:`, image.pixels);
   } catch (err) {
     console.error(`Error reading file: ${err}`);
     process.exit(1);
@@ -169,7 +169,17 @@ const grayscale = (image: Image, outFile: string): void => {
 };
 
 const invert = (image: Image, outFile: string): void => {
-  // TODO Manually process pixel data for inversion
+  for (let row = 0; row < image.height; row++) {
+    for (let col = 0; col < image.width; col++) {
+      const curColor = image.pixels[row]![col]!;
+      
+      curColor.red = 255 - curColor.red;  
+      curColor.green = 255 - curColor.green;
+      curColor.blue = 255 - curColor.blue;
+    }
+  }
+
+  writeImage(image, outFile);
   console.log(`Inverted image saved to ${outFile}`);
 };
 
