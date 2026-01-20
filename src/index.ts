@@ -184,7 +184,34 @@ const invert = (image: Image, outFile: string): void => {
 };
 
 const emboss = (image: Image, outFile: string): void => {
-  // TODO Manually implement emboss filter
+  for (let col = image.width - 1; col >= 0; --col) {
+    for (let row = image.height - 1; row >= 0; --row) {
+      const curColor = image.pixels[row]![col]!;
+      
+      let diff = 0;
+      if (col > 0 && row > 0) {
+        const upLeftColor = image.pixels[row - 1]![col - 1]!;
+        if (Math.abs(curColor.red - upLeftColor.red) > Math.abs(diff)) {
+          diff = curColor.red - upLeftColor.red;
+        }
+        if (Math.abs(curColor.green - upLeftColor.green) > Math.abs(diff)) {
+          diff = curColor.green - upLeftColor.green;
+        }
+        if (Math.abs(curColor.blue - upLeftColor.blue) > Math.abs(diff)) {
+          diff = curColor.blue - upLeftColor.blue;
+        }
+      }
+      
+      let grayLevel = 128 + diff;
+      grayLevel = Math.max(0, Math.min(grayLevel, 255));
+      
+      curColor.red = grayLevel;
+      curColor.green = grayLevel;
+      curColor.blue = grayLevel;
+    }
+  }
+  
+  writeImage(image, outFile);
   console.log(`Emboss image saved to ${outFile}`);
 };
 
