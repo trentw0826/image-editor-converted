@@ -1,0 +1,1 @@
+A practice in converting a java program to TypeScript. Runs a simple image filter program
