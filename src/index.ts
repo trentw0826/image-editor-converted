@@ -131,7 +131,7 @@ const writeImage = (image: Image, filename: string): void => {
   for (let row = 0; row < image.height; row++) {
     for (let col = 0; col < image.width; col++) {
       const pixel: Color = image.pixels[row]![col]!;
-      content += `${pixel.red} ${pixel.green} ${pixel.blue} `;
+      content += `${col === 0 ? "" : " "}${pixel.red} ${pixel.green} ${pixel.blue}`;
     }
     content += `\n`;
   }
