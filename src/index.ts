@@ -216,7 +216,32 @@ const emboss = (image: Image, outFile: string): void => {
 };
 
 const motionblur = (image: Image, outFile: string, length: number): void => {
-  // TODO Manually implement motion blur
+  if (length < 1) {
+    writeImage(image, outFile);
+    console.log(`Motion blur image saved to ${outFile}`);
+    return;
+  }
+
+  for (let col = 0; col < image.width; col++) {
+    for (let row = 0; row < image.height; row++) {
+      const curColor = image.pixels[row]![col]!;
+      
+      const maxCol = Math.min(image.width - 1, col + length - 1);
+      for (let i = col + 1; i <= maxCol; i++) {
+        const tmpColor = image.pixels[row]![i]!;
+        curColor.red += tmpColor.red;
+        curColor.green += tmpColor.green;
+        curColor.blue += tmpColor.blue;
+      }
+
+      const delta = maxCol - col + 1;
+      curColor.red = Math.floor(curColor.red / delta);
+      curColor.green = Math.floor(curColor.green / delta);
+      curColor.blue = Math.floor(curColor.blue / delta);
+    }
+  }
+  
+  writeImage(image, outFile);
   console.log(`Motion blur image saved to ${outFile}`);
 };
 
