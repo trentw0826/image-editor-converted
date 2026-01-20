@@ -124,16 +124,16 @@ const readImage = (filename: string): Image => {
 
 // Writes an Image object to a PPM P3 file
 const writeImage = (image: Image, filename: string): void => {
-  let content = "P3\n";
-  content += `${image.width} ${image.height}\n`;
-  content += `255\n`;
+  let content = "P3\r\n";
+  content += `${image.width} ${image.height}\r\n`;
+  content += `255\r\n`;
 
   for (let row = 0; row < image.height; row++) {
     for (let col = 0; col < image.width; col++) {
       const pixel: Color = image.pixels[row]![col]!;
       content += `${col === 0 ? "" : " "}${pixel.red} ${pixel.green} ${pixel.blue}`;
     }
-    content += `\n`;
+    content += `\r\n`;
   }
 
   writeFileSync(filename, content, "utf-8");
